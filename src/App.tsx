@@ -4,6 +4,7 @@ import BaseRoot from "./routes/BaseRoot/BaseRoot";
 import About from "./routes/About/About";
 import Vans from "./routes/Vans/Vans";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./server";
 
 function App() {
   const [count, setCount] = useState(0);
