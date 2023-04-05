@@ -6,4 +6,6 @@ type Van = {
   description: string;
   imageUrl: string;
   type: VanType;
+  hostId: number;
 };
+export default Van;
