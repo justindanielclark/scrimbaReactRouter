@@ -1,11 +1,11 @@
 import VanType from "./VanType";
 type Van = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   description: string;
   imageUrl: string;
   type: VanType;
-  hostId: number;
+  hostId: string;
 };
 export default Van;

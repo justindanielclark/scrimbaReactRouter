@@ -8,9 +8,8 @@ import HostDetails from "./routes/Host/Details";
 import HostIncome from "./routes/Host/Income";
 import HostReviews from "./routes/Host/Reviews";
 import HostVans from "./routes/Host/Vans";
-
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./server";
+import "./server/server";
 import VanPage, { loader as VanPageLoader } from "./routes/Van/VanPage";
 
 function App() {
