@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import star from "../../assets/svgs/star.svg";
 import StarsRating from "../../components/StarsRating";
-import users from "../../server/data/users";
 import Review from "../../types/Review";
 import User from "../../types/User";
+import isDateWithinTimePeriod from "../../utils/isDateWithinTime";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
@@ -49,38 +49,58 @@ function ReviewScores({
 
   return (
     <>
-      <section>
-        <h2 className="text-xl font-bold">Scores:</h2>
-        <table className="flex flex-col">
-          {[5, 4, 3, 2, 1].map((idx) => {
-            return (
-              <tr className="flex flex-row items-center">
-                <td className="basis-auto">{idx} Stars</td>
-                <td className="flex flex-row flex-1 bg-gray-400 rounded-lg h-4 items-center justify-start p-0.5">
-                  <div
-                    className="bg-orange-500 rounded-lg h-full"
-                    style={{
-                      width: `${getReviewPercentage(
+      <section className="px-2">
+        <h2 className="text-xl font-bold">
+          Scores
+          <span className="text-sm align-top inline-block pl-2">
+            {" "}
+            {(
+              reviews.reduce((acc, cur) => {
+                return acc + cur.rating;
+              }, 0) / reviews.length
+            ).toFixed(1)}{" "}
+            / 5 <span className="text-xs">avg.</span>
+          </span>
+        </h2>
+        <table className="flex flex-col px-1 w-full max-w-xl">
+          <tbody>
+            {Array.from(reviewScores.keys())
+              .sort((a, b) => b - a)
+              .map((idx) => {
+                return (
+                  <tr
+                    className="flex flex-row items-center gap-2 py-1"
+                    key={idx}
+                  >
+                    <td className="w-16">{`${idx} Star${
+                      idx !== 1 ? `s` : ""
+                    }`}</td>
+                    <td className="flex flex-row flex-1 bg-gray-400 rounded-lg h-4 items-center justify-start p-0.5">
+                      <div
+                        className="bg-orange-500 rounded-lg h-full"
+                        style={{
+                          width: `${getReviewPercentage(
+                            reviewScores.get(idx),
+                            reviews.length
+                          )}%`,
+                        }}
+                      ></div>
+                    </td>
+                    <td className="shrink-0 grow-0 w-10 text-right">
+                      {`${getReviewPercentage(
                         reviewScores.get(idx),
                         reviews.length
-                      )}%`,
-                    }}
-                  ></div>
-                </td>
-                <td className="basis-auto">
-                  {`${getReviewPercentage(
-                    reviewScores.get(idx),
-                    reviews.length
-                  )}%`}
-                </td>
-              </tr>
-            );
-          })}
+                      )}%`}
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
         </table>
       </section>
-      <section>
-        <h2 className="text-xl font-bold">Reviews:</h2>
-        <ul>
+      <section className="px-2">
+        <h2 className="text-xl font-bold">Reviews ({reviews.length}):</h2>
+        <ul className="px-1">
           {reviews.map((review) => {
             return (
               <li
@@ -89,7 +109,9 @@ function ReviewScores({
               >
                 <StarsRating rating={review.rating} />
                 <div className="flex flex-row items-center">
-                  <p className="mr-2">{usersMap.get(review.userId)}</p>
+                  <p className="font-bold mr-2 text-neutral-800">
+                    {usersMap.get(review.userId)}
+                  </p>
                   <p className="text-sm text-neutral-700">
                     {new Date(review.date).toDateString().substring(4)}
                   </p>
@@ -104,28 +126,84 @@ function ReviewScores({
   );
 }
 
+type reviewFilter =
+  | "last30days"
+  | "last3mon"
+  | "last6mon"
+  | "lastyear"
+  | "alltime";
+
+const reviewFilters: Array<{ value: reviewFilter; text: string }> = [
+  { value: "last30days", text: "last 30 days" },
+  { value: "last3mon", text: "last 3 months" },
+  { value: "last6mon", text: "last 6 months" },
+  { value: "lastyear", text: "last year" },
+  { value: "alltime", text: "all time" },
+];
+
+function getFilteredReviews(arr: Array<Review>, filter: reviewFilter) {
+  switch (filter) {
+    case "last30days": {
+      return arr.filter((review) =>
+        isDateWithinTimePeriod(new Date(review.date), "days", 30)
+      );
+    }
+    case "last3mon": {
+      return arr.filter((review) =>
+        isDateWithinTimePeriod(new Date(review.date), "months", 3)
+      );
+    }
+    case "last6mon": {
+      return arr.filter((review) =>
+        isDateWithinTimePeriod(new Date(review.date), "months", 6)
+      );
+    }
+    case "lastyear": {
+      return arr.filter((review) =>
+        isDateWithinTimePeriod(new Date(review.date), "years", 1)
+      );
+    }
+    default: {
+      return arr;
+    }
+  }
+}
+
 export default function Reviews() {
   const data = useLoaderData() as {
     reviews: Array<Review>;
     users: Array<User>;
   };
+  const [filter, setFilter] = useState<reviewFilter>("alltime");
+  const reviews = getFilteredReviews(data.reviews, filter);
   return (
     <>
-      <section className="flex flew-row flex-wrap">
-        <h1 className="text-xl font-bold mr-4">Your Reviews</h1>
-        <select>
-          <option value="last30days">last 30 days</option>
-          <option value="last3mon">last 3 months</option>
-          <option value="last6mon">last 6 months</option>
-          <option value="lastyear">last year</option>
-          <option value="alltime">all time</option>
+      <section className="flex flew-row flex-wrap px-2 my-2 items-center justify-end">
+        <h1 className="text-2xl font-bold mr-4 flex-1 text-left">
+          Your Reviews
+        </h1>
+        <select
+          defaultValue={filter}
+          onChange={(e) => {
+            setFilter(e.target.value as reviewFilter);
+          }}
+        >
+          {reviewFilters.map((reviewFilter) => {
+            return (
+              <option value={reviewFilter.value} key={reviewFilter.value}>
+                {reviewFilter.text}
+              </option>
+            );
+          })}
         </select>
       </section>
-      {data.reviews.length > 0 ? (
+      {reviews.length > 0 ? (
         <ReviewScores reviews={data.reviews} users={data.users} />
       ) : (
-        <section>
-          <p>It doesn't look like there are any reviews... yet.</p>
+        <section className="px-2">
+          <p className="px-1">
+            Unable to locate any reviews under the selected time limit
+          </p>
         </section>
       )}
     </>
