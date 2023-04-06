@@ -54,8 +54,10 @@ export default function Details() {
             </span>
             <span className="font-bold whitespace-nowrap">
               🌟{" "}
-              {data.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
-                data.reviews.length}
+              {(
+                data.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
+                data.reviews.length
+              ).toFixed(1)}
             </span>
             /5.0
           </p>
