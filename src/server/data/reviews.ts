@@ -5,8 +5,9 @@ const reviews: Array<Review> = [
     userId: "3",
     hostId: "123",
     vanID: "1",
-    review: "The van was clean and cozy. We had a great time on our trip!",
-    rating: 4.5,
+    review:
+      "The van was smaller than we expected, but it was still comfortable for our short trip. The beds were comfortable and we were able to get a good night's sleep. The kitchen was well-stocked with cooking utensils and we were able to cook all of our meals without any issues. The only downside was that the van did not have a shower, which made it a bit difficult to freshen up. Overall, it was a decent van and we would recommend it for shorter trips.",
+    rating: 5,
     date: "2021-08-10",
   },
   {
@@ -15,8 +16,8 @@ const reviews: Array<Review> = [
     hostId: "456",
     vanID: "2",
     review:
-      "The van was spacious and comfortable. The only downside was the noisy engine.",
-    rating: 3.5,
+      "The van had a great sound system and was perfect for our music festival weekend. The beds were comfortable and we were able to get a good night's sleep. The kitchen was well-stocked with cooking utensils and we were able to cook all of our meals without any issues. The only downside was that the van did not have a toilet, which made it a bit difficult during the night. However, this was not a major issue and we still had a great time with this van!",
+    rating: 4,
     date: "2021-07-25",
   },
   {
@@ -26,7 +27,7 @@ const reviews: Array<Review> = [
     vanID: "3",
     review:
       "The van had everything we needed for our camping trip. The bed was very comfortable.",
-    rating: 4,
+    rating: 5,
     date: "2021-08-05",
   },
   {
@@ -35,8 +36,8 @@ const reviews: Array<Review> = [
     hostId: "123",
     vanID: "4",
     review:
-      "The van was a bit old and had some wear and tear, but it got us to our destination safely.",
-    rating: 2.5,
+      "The van was very clean and well-maintained. We had a great experience with it. The beds were comfortable and the van had plenty of storage space for our luggage and camping gear. The kitchen was well-equipped with everything we needed to cook our meals. The owner was also very responsive and answered all of our questions promptly. We would definitely rent this van again in the future!",
+    rating: 3,
     date: "2021-09-01",
   },
   {
@@ -46,7 +47,7 @@ const reviews: Array<Review> = [
     vanID: "5",
     review:
       "The van was very clean and well-maintained. We had a great experience with it.",
-    rating: 4.5,
+    rating: 5,
     date: "2021-08-15",
   },
   {
@@ -56,7 +57,7 @@ const reviews: Array<Review> = [
     vanID: "6",
     review:
       "The van was smaller than we expected, but it was still comfortable for our short trip.",
-    rating: 3,
+    rating: 4,
     date: "2021-07-30",
   },
   {
@@ -76,7 +77,7 @@ const reviews: Array<Review> = [
     vanID: "2",
     review:
       "The van was a bit cramped for our family of four, but we still enjoyed our trip.",
-    rating: 3.5,
+    rating: 4,
     date: "2021-08-08",
   },
   {
@@ -96,7 +97,7 @@ const reviews: Array<Review> = [
     vanID: "4",
     review:
       "The van was very basic and didn't have many amenities, but it was still functional.",
-    rating: 2,
+    rating: 3,
     date: "2021-09-03",
   },
 ];
