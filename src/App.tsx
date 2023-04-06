@@ -1,12 +1,16 @@
 import { useState } from "react";
-import Layout from "./routes/shared/Layout";
+import Layout from "./routes/Layout/Layout";
 import Root from "./routes/BaseRoot/Root";
 import About from "./routes/About/About";
 import Vans, { loader as VansLoader } from "./routes/Vans/Vans";
-import HostLayout, { loader as HostLoader } from "./routes/Host/HostLayout";
-import HostDetails from "./routes/Host/Details";
+import HostLayout from "./routes/Host/HostLayout";
+import HostDetails, {
+  loader as HostDetailsLoader,
+} from "./routes/Host/Details";
 import HostIncome from "./routes/Host/Income";
-import HostReviews from "./routes/Host/Reviews";
+import HostReviews, {
+  loader as HostReviewsLoader,
+} from "./routes/Host/Reviews";
 import HostVans from "./routes/Host/Vans";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./server/server";
@@ -39,11 +43,11 @@ function App() {
           {
             path: "host",
             element: <HostLayout />,
-            loader: HostLoader,
             children: [
               {
                 index: true,
                 element: <HostDetails />,
+                loader: HostDetailsLoader,
               },
               {
                 path: "income",
@@ -52,6 +56,7 @@ function App() {
               {
                 path: "reviews",
                 element: <HostReviews />,
+                loader: HostReviewsLoader,
               },
               {
                 path: "vans",
