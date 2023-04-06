@@ -32,97 +32,85 @@ export default function Vans() {
           Explore our van options:
         </h2>
         <div className="grid grid-cols-1 xs:grid-cols-4 gap-2 xs:gap-4 px-3">
-          <div
-            className={`rounded-lg mx-auto w-full flex flex-row cursor-pointer ${
+          <label
+            className={`rounded-lg basis-full text-center py-1 cursor-pointer ${
               chosenFilters.simple
                 ? "bg-orange-500 hover:bg-orange-600 text-white"
                 : "bg-yellow-100 hover:bg-yellow-200 text-black"
             }`}
+            htmlFor="simpleFilter"
           >
-            <label
-              className="basis-full text-center py-1"
-              htmlFor="simpleFilter"
-            >
-              Simple
-              <input
-                readOnly={true}
-                checked={chosenFilters.simple}
-                type="checkbox"
-                name="simpleFilter"
-                id="simpleFilter"
-                className="h-0 w-0"
-                onClick={() => {
-                  setChosenFilter((x) => {
-                    return {
-                      ...x,
-                      simple: !x.simple,
-                    };
-                  });
-                }}
-              />
-            </label>
-          </div>
-          <div
-            className={`rounded-lg mx-auto w-full flex flex-row cursor-pointer ${
+            Simple
+            <input
+              readOnly={true}
+              checked={chosenFilters.simple}
+              type="checkbox"
+              name="simpleFilter"
+              id="simpleFilter"
+              className="h-0 w-0 hidden"
+              onClick={() => {
+                setChosenFilter((x) => {
+                  return {
+                    ...x,
+                    simple: !x.simple,
+                  };
+                });
+              }}
+            />
+          </label>
+          <label
+            className={`rounded-lg basis-full text-center py-1 cursor-pointer ${
               chosenFilters.rugged
                 ? "bg-green-800 hover:bg-green-900 text-white"
                 : "bg-yellow-100 hover:bg-yellow-200 text-black"
             }`}
+            htmlFor="ruggedFilter"
           >
-            <label
-              className="basis-full text-center py-1"
-              htmlFor="ruggedFilter"
-            >
-              Rugged
-              <input
-                readOnly={true}
-                checked={chosenFilters.rugged}
-                type="checkbox"
-                name="ruggedFilter"
-                id="ruggedFilter"
-                className="h-0 w-0"
-                onClick={() => {
-                  setChosenFilter((x) => {
-                    return {
-                      ...x,
-                      rugged: !x.rugged,
-                    };
-                  });
-                }}
-              />
-            </label>
-          </div>
+            Rugged
+            <input
+              readOnly={true}
+              checked={chosenFilters.rugged}
+              type="checkbox"
+              name="ruggedFilter"
+              id="ruggedFilter"
+              className="h-0 w-0 hidden"
+              onClick={() => {
+                setChosenFilter((x) => {
+                  return {
+                    ...x,
+                    rugged: !x.rugged,
+                  };
+                });
+              }}
+            />
+          </label>
 
-          <div
-            className={`rounded-lg mx-auto w-full flex flex-row cursor-pointer ${
+          <label
+            className={`rounded-lg basis-full text-center py-1 cursor-pointer ${
               chosenFilters.luxury
                 ? "bg-neutral-800 hover:bg-neutral-900 text-white"
                 : "bg-yellow-100 hover:bg-yellow-200 text-black"
             }`}
+            htmlFor="luxuryFilter"
           >
-            <label
-              className="basis-full text-center py-1"
-              htmlFor="luxuryFilter"
-            >
-              Luxury
-              <input
-                readOnly={true}
-                checked={chosenFilters.luxury}
-                type="checkbox"
-                name="luxuryFilter"
-                id="luxuryFilter"
-                className="h-0 w-0"
-                onClick={() => {
-                  setChosenFilter((x) => {
-                    return {
-                      ...x,
-                      luxury: !x.luxury,
-                    };
-                  });
-                }}
-              />
-            </label>
-          </div>
+            Luxury
+            <input
+              readOnly={true}
+              checked={chosenFilters.luxury}
+              type="checkbox"
+              name="luxuryFilter"
+              id="luxuryFilter"
+              className="h-0 w-0 hidden"
+              onClick={() => {
+                setChosenFilter((x) => {
+                  return {
+                    ...x,
+                    luxury: !x.luxury,
+                  };
+                });
+              }}
+            />
+          </label>
 
           <button
             className="hover:bg-neutral-300 rounded"
