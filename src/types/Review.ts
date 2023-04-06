@@ -3,8 +3,8 @@ type Review = {
   review: string;
   rating: number;
   date: string;
-  userID: string;
-  hostID: string;
+  userId: string;
+  hostId: string;
   vanID: string;
 };
 
