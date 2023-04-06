@@ -28,7 +28,8 @@ createServer({
 
     this.get("/vans/:id", (schema, request) => {
       const id = request.params.id;
-      return schema.find("van", id);
+      const van = schema.find("van", id);
+      return { ...van.attrs };
     });
 
     this.get("/hosts/:id/details", (schema, request) => {
