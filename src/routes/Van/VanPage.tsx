@@ -1,28 +1,16 @@
 import { Link } from "react-router-dom";
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
 import Van from "../../types/Van";
-import capitalize from "../../utils/capitalize";
 import VanTypeNotif from "../../components/VanTypeNotif";
 import vanTypeColoring from "../../utils/vanTypeColoring";
 
-type loaderArgs = {
-  params: {
-    vanID: number;
-  };
-};
-
 async function loader({ params }: LoaderFunctionArgs) {
-  return fetch(`/api/vans/${params.vanID}`)
-    .then((res) => {
-      if (res.status !== 200) {
-        throw new Error("Unable to Retrieve Van Data");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      const modData = { ...data.vans };
-      return Promise.resolve(modData);
-    });
+  return fetch(`/api/vans/${params.vanID}`).then((res) => {
+    if (res.status !== 200) {
+      throw new Error("Unable to Retrieve Van Data");
+    }
+    return res.json();
+  });
 }
 
 export default function VanPage(): JSX.Element {
