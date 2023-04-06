@@ -1,8 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
-
-async function loader() {
-  return null;
-}
+import { NavLink, Outlet, useLoaderData } from "react-router-dom";
 
 export default function HostLayout() {
   return (
@@ -46,5 +42,3 @@ export default function HostLayout() {
     </main>
   );
 }
-
-export { loader };
