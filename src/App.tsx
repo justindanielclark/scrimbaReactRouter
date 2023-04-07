@@ -1,17 +1,27 @@
 import { useState } from "react";
+
 import Layout from "./routes/Layout/Layout";
 import Root from "./routes/BaseRoot/Root";
 import About from "./routes/About/About";
 import Vans, { loader as VansLoader } from "./routes/Vans/Vans";
-import HostLayout from "./routes/Host/HostLayout";
+
+import HostLayout from "./routes/Host/Layout";
 import HostDetails, {
   loader as HostDetailsLoader,
 } from "./routes/Host/Details";
-import HostIncome from "./routes/Host/Income";
+import HostIncome, { loader as HostIncomeLoader } from "./routes/Host/Income";
 import HostReviews, {
   loader as HostReviewsLoader,
 } from "./routes/Host/Reviews";
-import HostVans from "./routes/Host/Vans";
+import HostVans, { loader as HostVansLoader } from "./routes/Host/Vans";
+
+import HostVanLayout, {
+  loader as HostVanLoader,
+} from "./routes/Host/Van/Layout";
+import HostVanDetails from "./routes/Host/Van/Details";
+import HostVanPricing from "./routes/Host/Van/Pricing";
+import HostVanPhotos from "./routes/Host/Van/Photos";
+
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./server/server";
 import VanPage, { loader as VanPageLoader } from "./routes/Van/VanPage";
@@ -52,6 +62,7 @@ function App() {
               {
                 path: "income",
                 element: <HostIncome />,
+                loader: HostIncomeLoader,
               },
               {
                 path: "reviews",
@@ -61,10 +72,27 @@ function App() {
               {
                 path: "vans",
                 element: <HostVans />,
+                loader: HostVansLoader,
               },
               {
-                path: "vans/:id",
-                element: <div>You're viewing some van details harry!</div>,
+                id: "rootVan",
+                path: "vans/:vanId",
+                element: <HostVanLayout />,
+                loader: HostVanLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <HostVanDetails />,
+                  },
+                  {
+                    path: "pricing",
+                    element: <HostVanPricing />,
+                  },
+                  {
+                    path: "photos",
+                    element: <HostVanPhotos />,
+                  },
+                ],
               },
               {
                 path: "vans/:id/edit",
