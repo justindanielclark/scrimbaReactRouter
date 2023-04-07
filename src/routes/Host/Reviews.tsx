@@ -178,8 +178,8 @@ export default function Reviews() {
   const reviews = getFilteredReviews(data.reviews, filter);
   return (
     <>
-      <section className="flex flew-row flex-wrap px-2 my-2 items-center justify-end">
-        <h1 className="text-2xl font-bold mr-4 flex-1 text-left">
+      <section className="flex flew-row flex-wrap px-2 my-2 items-center justify-end w-full max-w-xl">
+        <h1 className="text-2xl font-bold mr-4 flex-1 text-left whitespace-nowrap">
           Your Reviews
         </h1>
         <select

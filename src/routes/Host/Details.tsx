@@ -3,6 +3,7 @@ import Host from "../../types/Host";
 import Review from "../../types/Review";
 
 import { NavLink, useLoaderData } from "react-router-dom";
+import VanListItem from "../../components/VanListItem";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
@@ -85,28 +86,7 @@ export default function Details() {
         </div>
         <ul className="flex flex-col gap-2 mt-4">
           {data.vans.map((van) => {
-            return (
-              <li
-                key={van.id}
-                className="flex flex-row p-3 gap-4 bg-neutral-50 rounded items-center mx-auto w-full max-w-lg"
-              >
-                <img
-                  className="w-16 h-16 rounded-lg"
-                  src={van.imageUrl}
-                  alt={`Thumbnail`}
-                />
-                <div className="flex-1">
-                  <h1 className="font-bold">{van.name}</h1>
-                  <p className="text-sm pl-1">${van.price}/day</p>
-                </div>
-                <NavLink
-                  className="py-1 px-2 bg-yellow-600 text-white font-bold text-sm rounded"
-                  to={`/host/vans/${van.id}/edit`}
-                >
-                  Edit
-                </NavLink>
-              </li>
-            );
+            return <VanListItem van={van} />;
           })}
         </ul>
       </section>

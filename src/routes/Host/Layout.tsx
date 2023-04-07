@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLoaderData } from "react-router-dom";
 
-export default function HostLayout() {
+export default function Layout() {
   return (
     <main className="flex flex-col w-full max-w-5xl mx-auto overflow-x-hidden flex-1">
       <nav className="flex flex-row justify-start shrink-0 items-center bg-orange-100 gap-4 overflow-x-auto">
@@ -8,8 +8,8 @@ export default function HostLayout() {
           className={({ isActive }) =>
             isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
           }
-          to={"/host"}
           end
+          to={"."}
         >
           Dashboard
         </NavLink>
@@ -17,7 +17,7 @@ export default function HostLayout() {
           className={({ isActive }) =>
             isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
           }
-          to={"/host/income"}
+          to={"income"}
         >
           Income
         </NavLink>
@@ -25,7 +25,7 @@ export default function HostLayout() {
           className={({ isActive }) =>
             isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
           }
-          to={"/host/vans"}
+          to={"vans"}
         >
           Vans
         </NavLink>
@@ -33,7 +33,7 @@ export default function HostLayout() {
           className={({ isActive }) =>
             isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
           }
-          to={"/host/reviews"}
+          to={"reviews"}
         >
           Reviews
         </NavLink>

@@ -1,7 +1,35 @@
+import Van from "../../types/Van";
+import { useLoaderData } from "react-router-dom";
+import VanListItem from "../../components/VanListItem";
+
+async function loader() {
+  //TODO: Currently Hardcoded Search For Host '123'
+  return fetch("/api/hosts/123/vans").then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    }
+    throw new Error("Unable To Retrieve API Data");
+  });
+}
+
 export default function Vans() {
+  const data = useLoaderData() as Array<Van>;
   return (
-    <section>
-      <p>I am the vans page!</p>
+    <section className="p-3">
+      {data.length > 0 ? (
+        <>
+          <h1 className="font-bold text-xl">Your listed vans:</h1>
+          <ul className="flex flex-col gap-4">
+            {data.map((van) => (
+              <VanListItem key={van.id} van={van} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>{/*TODO: Generate a notice that no van data has been found */}</p>
+      )}
     </section>
   );
 }
+
+export { loader };
