@@ -40,6 +40,18 @@ createServer({
       return { hostData, vans: ownedVans.models, reviews: reviews.models };
     });
 
+    this.get("/hosts/:id/income", (schema, request) => {
+      const id = request.params.id;
+      const hostData = schema.find("host", id);
+      return hostData.income;
+    });
+
+    this.get("/hosts/:id/vans", (schema, request) => {
+      const id = request.params.id;
+      const ownedVans = schema.where("van", { hostId: id });
+      return ownedVans.models;
+    });
+
     this.get("/hosts/:id/reviews", (schema, request) => {
       const id = request.params.id;
       const reviews = schema.where("review", { hostId: id });
