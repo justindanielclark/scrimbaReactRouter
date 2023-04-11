@@ -2,7 +2,7 @@ import Van from "../../types/Van";
 import Host from "../../types/Host";
 import Review from "../../types/Review";
 
-import { NavLink, useLoaderData } from "react-router-dom";
+import { NavLink, useLoaderData, useLocation } from "react-router-dom";
 import VanListItem from "../../components/VanListItem";
 
 async function loader() {
@@ -16,6 +16,8 @@ async function loader() {
 }
 
 export default function Details() {
+  const location = useLocation();
+  console.log(location);
   const data = useLoaderData() as {
     hostData: Host;
     reviews: Array<Review>;
@@ -86,7 +88,13 @@ export default function Details() {
         </div>
         <ul className="flex flex-col gap-2 mt-4">
           {data.vans.map((van) => {
-            return <VanListItem van={van} />;
+            return (
+              <VanListItem
+                van={van}
+                key={van.id}
+                returnPath={location.pathname}
+              />
+            );
           })}
         </ul>
       </section>

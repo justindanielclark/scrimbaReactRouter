@@ -34,14 +34,30 @@ export default function VanLayout() {
             <h1 className="text-2xl font-bold">{data.name}</h1>
           </div>
         </section>
-        <nav className="flex flex-row gap-6 my-4 bg-neutral-100 p-2">
-          <NavLink to={"."} className="">
+        <nav className="flex flex-row gap-6 my-4 bg-neutral-100">
+          <NavLink
+            end
+            to={"."}
+            className={({ isActive }) =>
+              isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
+            }
+          >
             Details
           </NavLink>
-          <NavLink to={"./pricing"} className="">
+          <NavLink
+            to={"./pricing"}
+            className={({ isActive }) =>
+              isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
+            }
+          >
             Pricing
           </NavLink>
-          <NavLink to={"./photos"} className="">
+          <NavLink
+            to={"./photos"}
+            className={({ isActive }) =>
+              isActive ? "underline underline-offset-4 p-3 font-bold" : "p-3"
+            }
+          >
             Photos
           </NavLink>
         </nav>

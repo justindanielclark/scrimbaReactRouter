@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Layout from "./routes/Layout/Layout";
+import MissingPage from "./routes/MissingPage";
 import Root from "./routes/BaseRoot/Root";
 import About from "./routes/About/About";
 import Vans, { loader as VansLoader } from "./routes/Vans/Vans";
@@ -30,8 +31,13 @@ function App() {
   const router = createBrowserRouter(
     [
       {
+        path: "/",
         element: <Layout />,
         children: [
+          {
+            path: "*",
+            element: <MissingPage />,
+          },
           {
             index: true,
             element: <Root />,

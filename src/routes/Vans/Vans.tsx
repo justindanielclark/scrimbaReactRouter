@@ -1,15 +1,23 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useSearchParams,
+} from "react-router-dom";
 import Van from "../../types/Van";
+import searchParamDeconstructor, {
+  SearchParamLiteral,
+} from "../../utils/searchParamDeconstructor";
 import VanProductCard from "./VanProductCard";
 
-type chosenFilterType = {
-  simple: boolean;
-  luxury: boolean;
-  rugged: boolean;
-};
+const filterTypes = ["simple", "rugged", "luxury"] as const;
 
-async function loader(): Promise<{ vans: Array<Van> }> {
+type chosenFilterType = { [Key in (typeof filterTypes)[number]]: boolean };
+
+async function loader({
+  request,
+}: LoaderFunctionArgs): Promise<{ vans: Array<Van> }> {
+  console.log(request);
   return fetch("/api/vans/").then((res) => {
     if (res.status === 200) {
       return res.json();
@@ -17,14 +25,52 @@ async function loader(): Promise<{ vans: Array<Van> }> {
     throw new Error("Unable To Retrieve API Data");
   });
 }
-
+function createChosenFilters(
+  deconstructedSearchParams: SearchParamLiteral | null
+): chosenFilterType {
+  if (deconstructedSearchParams) {
+    if (
+      deconstructedSearchParams.type &&
+      Array.isArray(deconstructedSearchParams.type)
+    ) {
+      return {
+        simple: deconstructedSearchParams.type.includes("simple")
+          ? true
+          : false,
+        rugged: deconstructedSearchParams.type.includes("rugged")
+          ? true
+          : false,
+        luxury: deconstructedSearchParams.type.includes("luxury")
+          ? true
+          : false,
+      };
+    }
+  }
+  return {
+    simple: false,
+    rugged: false,
+    luxury: false,
+  };
+}
+function filterVans(
+  vans: Array<Van>,
+  chosenFilters: chosenFilterType
+): Array<Van> {
+  if (!chosenFilters.luxury && !chosenFilters.rugged && !chosenFilters.simple) {
+    return vans.map((van) => van);
+  }
+  return vans.filter((van) => chosenFilters[van.type]);
+}
+function showClearFilterButton(chosenFilters: chosenFilterType): boolean {
+  return chosenFilters.simple || chosenFilters.rugged || chosenFilters.luxury;
+}
 export default function Vans() {
   const data = useLoaderData() as { vans: Array<Van> };
-  const [chosenFilters, setChosenFilter] = useState<chosenFilterType>({
-    simple: true,
-    luxury: true,
-    rugged: true,
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const typeFilters = searchParamDeconstructor(searchParams.toString());
+  const chosenFilters: chosenFilterType = createChosenFilters(typeFilters);
+  const displayedVans = filterVans(data.vans, chosenFilters);
+
   return (
     <main className="flex-1 overflow-x-hidden">
       <div className="max-w-5xl mx-auto">
@@ -49,12 +95,19 @@ export default function Vans() {
               id="simpleFilter"
               className="h-0 w-0 hidden"
               onClick={() => {
-                setChosenFilter((x) => {
-                  return {
-                    ...x,
-                    simple: !x.simple,
-                  };
-                });
+                if (typeFilters && typeFilters.type) {
+                  if (typeFilters.type.includes("simple")) {
+                    setSearchParams({
+                      type: [
+                        ...typeFilters.type.filter((type) => type !== "simple"),
+                      ],
+                    });
+                  } else {
+                    setSearchParams({ type: [...typeFilters.type, "simple"] });
+                  }
+                } else {
+                  setSearchParams({ type: ["simple"] });
+                }
               }}
             />
           </label>
@@ -75,12 +128,19 @@ export default function Vans() {
               id="ruggedFilter"
               className="h-0 w-0 hidden"
               onClick={() => {
-                setChosenFilter((x) => {
-                  return {
-                    ...x,
-                    rugged: !x.rugged,
-                  };
-                });
+                if (typeFilters && typeFilters.type) {
+                  if (typeFilters.type.includes("rugged")) {
+                    setSearchParams({
+                      type: [
+                        ...typeFilters.type.filter((type) => type !== "rugged"),
+                      ],
+                    });
+                  } else {
+                    setSearchParams({ type: [...typeFilters.type, "rugged"] });
+                  }
+                } else {
+                  setSearchParams({ type: ["rugged"] });
+                }
               }}
             />
           </label>
@@ -102,36 +162,44 @@ export default function Vans() {
               id="luxuryFilter"
               className="h-0 w-0 hidden"
               onClick={() => {
-                setChosenFilter((x) => {
-                  return {
-                    ...x,
-                    luxury: !x.luxury,
-                  };
-                });
+                if (typeFilters && typeFilters.type) {
+                  if (typeFilters.type.includes("luxury")) {
+                    setSearchParams({
+                      type: [
+                        ...typeFilters.type.filter((type) => type !== "luxury"),
+                      ],
+                    });
+                  } else {
+                    setSearchParams({ type: [...typeFilters.type, "luxury"] });
+                  }
+                } else {
+                  setSearchParams({ type: ["luxury"] });
+                }
               }}
             />
           </label>
-
-          <button
-            className="hover:bg-neutral-300 rounded"
-            onClick={() => {
-              setChosenFilter({
-                simple: true,
-                luxury: true,
-                rugged: true,
-              });
-            }}
-          >
-            Clear Filters
-          </button>
+          {showClearFilterButton(chosenFilters) ? (
+            <button
+              className="hover:bg-neutral-300 rounded"
+              onClick={() => {
+                setSearchParams({});
+              }}
+            >
+              Clear Filters
+            </button>
+          ) : undefined}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
           {data.vans.length === 0 ? (
             <p>Unable to Load Vans</p>
           ) : (
-            data.vans
-              .filter((van) => chosenFilters[van.type])
-              .map((van) => <VanProductCard van={van} key={van.id} />)
+            displayedVans.map((van) => (
+              <VanProductCard
+                van={van}
+                key={van.id}
+                chosenFilters={chosenFilters}
+              />
+            ))
           )}
         </div>
       </div>
@@ -139,4 +207,5 @@ export default function Vans() {
   );
 }
 
+export type { chosenFilterType };
 export { loader };
