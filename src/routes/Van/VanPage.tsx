@@ -9,14 +9,10 @@ import VanTypeNotif from "../../components/VanTypeNotif";
 import vanTypeColoring from "../../utils/vanTypeColoring";
 import { chosenFilterType } from "../Vans/Vans";
 import capitalize from "../../utils/capitalize";
+import API from "../../api/API";
 
 async function loader({ params }: LoaderFunctionArgs) {
-  return fetch(`/api/vans/${params.vanID}`).then((res) => {
-    if (res.status !== 200) {
-      throw new Error("Unable to Retrieve Van Data");
-    }
-    return res.json();
-  });
+  return API.getVans(params.vanID);
 }
 
 function createBackButtonText(chosenFilters: chosenFilterType): string {

@@ -1,15 +1,11 @@
 import Van from "../../types/Van";
 import { useLoaderData } from "react-router-dom";
 import VanListItem from "../../components/VanListItem";
+import API from "../../api/API";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
-  return fetch("/api/hosts/123/vans").then((res) => {
-    if (res.status === 200) {
-      return res.json();
-    }
-    throw new Error("Unable To Retrieve API Data");
-  });
+  return API.getHostVans("123");
 }
 
 export default function Vans() {

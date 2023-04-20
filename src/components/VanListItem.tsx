@@ -2,9 +2,8 @@ import { NavLink } from "react-router-dom";
 import Van from "../types/Van";
 type Props = {
   van: Van;
-  returnPath: string;
 };
-export default function VanListItem({ van, returnPath }: Props) {
+export default function VanListItem({ van }: Props) {
   return (
     <li className="flex flex-row flex-wrap p-3 gap-4 bg-neutral-50 rounded items-center mx-auto w-full max-w-lg">
       <img

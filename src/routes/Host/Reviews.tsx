@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import API from "../../api/API";
 import StarsRating from "../../components/StarsRating";
 import Review from "../../types/Review";
 import User from "../../types/User";
@@ -7,12 +8,7 @@ import isDateWithinTimePeriod from "../../utils/isDateWithinTime";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
-  return fetch("/api/hosts/123/reviews").then((res) => {
-    if (res.status === 200) {
-      return res.json();
-    }
-    throw new Error("Unable To Retrieve API Data");
-  });
+  return API.getHostReviews("123");
 }
 
 function getReviewPercentage(

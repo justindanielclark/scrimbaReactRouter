@@ -1,23 +1,17 @@
 import Van from "../../types/Van";
 import Host from "../../types/Host";
 import Review from "../../types/Review";
-
+import API from "../../api/API";
 import { NavLink, useLoaderData, useLocation } from "react-router-dom";
 import VanListItem from "../../components/VanListItem";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
-  return fetch("/api/hosts/123/details").then((res) => {
-    if (res.status === 200) {
-      return res.json();
-    }
-    throw new Error("Unable To Retrieve API Data");
-  });
+  return API.getHostDetails("123");
 }
 
 export default function Details() {
   const location = useLocation();
-  console.log(location);
   const data = useLoaderData() as {
     hostData: Host;
     reviews: Array<Review>;
@@ -88,13 +82,7 @@ export default function Details() {
         </div>
         <ul className="flex flex-col gap-2 mt-4">
           {data.vans.map((van) => {
-            return (
-              <VanListItem
-                van={van}
-                key={van.id}
-                returnPath={location.pathname}
-              />
-            );
+            return <VanListItem van={van} key={van.id} />;
           })}
         </ul>
       </section>

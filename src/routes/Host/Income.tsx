@@ -12,15 +12,11 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import API from "../../api/API";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
-  return fetch("/api/hosts/123/income").then((res) => {
-    if (res.status === 200) {
-      return res.json();
-    }
-    throw new Error("Unable To Retrieve API Data");
-  });
+  return API.getHostIncome("123");
 }
 
 function CustomTooltip({

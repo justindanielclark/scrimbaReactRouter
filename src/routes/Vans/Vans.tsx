@@ -4,31 +4,19 @@ import {
   useLoaderData,
   useSearchParams,
 } from "react-router-dom";
+import API from "../../api/API";
 import Van from "../../types/Van";
 import searchParamDeconstructor, {
   SearchParamLiteral,
 } from "../../utils/searchParamDeconstructor";
 import VanProductCard from "./VanProductCard";
-import { RestSerializer } from "miragejs";
 
 const filterTypes = ["simple", "rugged", "luxury"] as const;
 
 type chosenFilterType = { [Key in (typeof filterTypes)[number]]: boolean };
 
-async function loader({
-  request,
-}: LoaderFunctionArgs): Promise<{ vans: Array<Van> }> {
-  console.log(request);
-  return fetch("/api/vans/").then((res) => {
-    if (res.status === 200) {
-      return res.json();
-    }
-    throw {
-      message: "Unable to Load Vans",
-      status: res.status,
-      statusText: res.statusText,
-    } as RouteError;
-  });
+async function loader(): Promise<{ vans: Array<Van> }> {
+  return API.getVans();
 }
 function createChosenFilters(
   deconstructedSearchParams: SearchParamLiteral | null
