@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import Layout from "./routes/Layout/Layout";
 import MissingPage from "./routes/MissingPage";
 import Root from "./routes/BaseRoot/Root";
@@ -23,95 +21,105 @@ import HostVanDetails from "./routes/Host/Van/Details";
 import HostVanPricing from "./routes/Host/Van/Pricing";
 import HostVanPhotos from "./routes/Host/Van/Photos";
 
+import ErrorPage from "./routes/ErrorPage";
+
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./server/server";
 import VanPage, { loader as VanPageLoader } from "./routes/Van/VanPage";
+import Login from "./routes/Login/Login";
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "*",
+          element: <MissingPage />,
+        },
+        {
+          index: true,
+          element: <Root />,
+        },
+        {
+          path: "about",
+          element: <About />,
+        },
+        {
+          path: "vans",
+          element: <Vans />,
+          loader: VansLoader,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "vans/:vanID",
+          element: <VanPage />,
+          loader: VanPageLoader,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "host",
+          element: <HostLayout />,
+          errorElement: <ErrorPage />,
+          children: [
+            {
+              index: true,
+              element: <HostDetails />,
+              loader: HostDetailsLoader,
+            },
+            {
+              path: "income",
+              element: <HostIncome />,
+              loader: HostIncomeLoader,
+            },
+            {
+              path: "reviews",
+              element: <HostReviews />,
+              loader: HostReviewsLoader,
+            },
+            {
+              path: "vans",
+              element: <HostVans />,
+              loader: HostVansLoader,
+            },
+            {
+              id: "rootVan",
+              path: "vans/:vanId",
+              element: <HostVanLayout />,
+              loader: HostVanLoader,
+              children: [
+                {
+                  index: true,
+                  element: <HostVanDetails />,
+                },
+                {
+                  path: "pricing",
+                  element: <HostVanPricing />,
+                },
+                {
+                  path: "photos",
+                  element: <HostVanPhotos />,
+                },
+              ],
+            },
+            {
+              path: "vans/:id/edit",
+              element: <div>You're editing me harry</div>,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  {}
+);
 
 function App() {
-  const router = createBrowserRouter(
-    [
-      {
-        path: "/",
-        element: <Layout />,
-        children: [
-          {
-            path: "*",
-            element: <MissingPage />,
-          },
-          {
-            index: true,
-            element: <Root />,
-          },
-          {
-            path: "about",
-            element: <About />,
-          },
-          {
-            path: "vans",
-            element: <Vans />,
-            loader: VansLoader,
-          },
-          {
-            path: "vans/:vanID",
-            element: <VanPage />,
-            loader: VanPageLoader,
-          },
-          {
-            path: "host",
-            element: <HostLayout />,
-            children: [
-              {
-                index: true,
-                element: <HostDetails />,
-                loader: HostDetailsLoader,
-              },
-              {
-                path: "income",
-                element: <HostIncome />,
-                loader: HostIncomeLoader,
-              },
-              {
-                path: "reviews",
-                element: <HostReviews />,
-                loader: HostReviewsLoader,
-              },
-              {
-                path: "vans",
-                element: <HostVans />,
-                loader: HostVansLoader,
-              },
-              {
-                id: "rootVan",
-                path: "vans/:vanId",
-                element: <HostVanLayout />,
-                loader: HostVanLoader,
-                children: [
-                  {
-                    index: true,
-                    element: <HostVanDetails />,
-                  },
-                  {
-                    path: "pricing",
-                    element: <HostVanPricing />,
-                  },
-                  {
-                    path: "photos",
-                    element: <HostVanPhotos />,
-                  },
-                ],
-              },
-              {
-                path: "vans/:id/edit",
-                element: <div>You're editing me harry</div>,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    {}
-  );
-
   return <RouterProvider router={router} />;
 }
 

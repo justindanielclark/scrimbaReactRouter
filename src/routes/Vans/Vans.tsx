@@ -1,4 +1,4 @@
-import { useState } from "react";
+import RouteError from "../../types/RouteError";
 import {
   LoaderFunctionArgs,
   useLoaderData,
@@ -9,6 +9,7 @@ import searchParamDeconstructor, {
   SearchParamLiteral,
 } from "../../utils/searchParamDeconstructor";
 import VanProductCard from "./VanProductCard";
+import { RestSerializer } from "miragejs";
 
 const filterTypes = ["simple", "rugged", "luxury"] as const;
 
@@ -22,7 +23,11 @@ async function loader({
     if (res.status === 200) {
       return res.json();
     }
-    throw new Error("Unable To Retrieve API Data");
+    throw {
+      message: "Unable to Load Vans",
+      status: res.status,
+      statusText: res.statusText,
+    } as RouteError;
   });
 }
 function createChosenFilters(

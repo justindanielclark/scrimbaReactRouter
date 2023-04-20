@@ -1,3 +1,4 @@
+import UserSVG from "../../assets/svgs/user.svg";
 import { Link, NavLink } from "react-router-dom";
 export default function Header() {
   return (
@@ -30,6 +31,9 @@ export default function Header() {
             to="/vans"
           >
             Vans
+          </NavLink>
+          <NavLink to={"/login"}>
+            <img src={UserSVG} className="w-6 h-6" />
           </NavLink>
         </nav>
       </div>
