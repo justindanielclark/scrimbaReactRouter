@@ -1,6 +1,6 @@
 import RouteError from "../types/RouteError";
 export default async function getHostReviews(hostId: string) {
-  const fetchString = `/hosts/${hostId}/reviews`;
+  const fetchString = `/api/hosts/${hostId}/reviews`;
   return fetch(fetchString).then((res) => {
     if (!res.ok) {
       throw {
