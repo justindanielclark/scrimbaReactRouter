@@ -13,9 +13,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import API from "../../api/API";
+import { requireAuth } from "../../utils/requireAuth";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
+  requireAuth();
   return API.getHostIncome("123");
 }
 

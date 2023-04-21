@@ -2,16 +2,17 @@ import Van from "../../types/Van";
 import Host from "../../types/Host";
 import Review from "../../types/Review";
 import API from "../../api/API";
-import { NavLink, useLoaderData, useLocation } from "react-router-dom";
+import { NavLink, redirect, useLoaderData } from "react-router-dom";
 import VanListItem from "../../components/VanListItem";
+import { requireAuth } from "../../utils/requireAuth";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
+  requireAuth();
   return API.getHostDetails("123");
 }
 
 export default function Details() {
-  const location = useLocation();
   const data = useLoaderData() as {
     hostData: Host;
     reviews: Array<Review>;

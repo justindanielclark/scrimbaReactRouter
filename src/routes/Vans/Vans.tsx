@@ -1,9 +1,4 @@
-import RouteError from "../../types/RouteError";
-import {
-  LoaderFunctionArgs,
-  useLoaderData,
-  useSearchParams,
-} from "react-router-dom";
+import { redirect, useLoaderData, useSearchParams } from "react-router-dom";
 import API from "../../api/API";
 import Van from "../../types/Van";
 import searchParamDeconstructor, {
@@ -15,7 +10,7 @@ const filterTypes = ["simple", "rugged", "luxury"] as const;
 
 type chosenFilterType = { [Key in (typeof filterTypes)[number]]: boolean };
 
-async function loader(): Promise<{ vans: Array<Van> }> {
+async function loader() {
   return API.getVans();
 }
 function createChosenFilters(

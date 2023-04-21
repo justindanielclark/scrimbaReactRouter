@@ -2,9 +2,11 @@ import Van from "../../types/Van";
 import { useLoaderData } from "react-router-dom";
 import VanListItem from "../../components/VanListItem";
 import API from "../../api/API";
+import { requireAuth } from "../../utils/requireAuth";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
+  requireAuth();
   return API.getHostVans("123");
 }
 

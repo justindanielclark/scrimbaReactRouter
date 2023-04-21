@@ -1,11 +1,11 @@
 import { redirect } from "react-router-dom";
+import loggedInStatus from "../server/loggedInStatus";
 
-export async function requireAuth(): Promise<Response | null> {
-  const isLoggedIn = false;
-  console.log("hit here");
-  if (!isLoggedIn) {
-    console.log("hit here2");
-    throw redirect("/login");
+export async function requireAuth() {
+  if (!loggedInStatus) {
+    return redirect(
+      "/login?title=Unable To Access Page&message=You Must Login Or Create An Account First"
+    );
   }
   return null;
 }

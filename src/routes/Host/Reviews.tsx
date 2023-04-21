@@ -5,9 +5,11 @@ import StarsRating from "../../components/StarsRating";
 import Review from "../../types/Review";
 import User from "../../types/User";
 import isDateWithinTimePeriod from "../../utils/isDateWithinTime";
+import { requireAuth } from "../../utils/requireAuth";
 
 async function loader() {
   //TODO: Currently Hardcoded Search For Host '123'
+  requireAuth();
   return API.getHostReviews("123");
 }
 

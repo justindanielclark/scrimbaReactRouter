@@ -1,10 +1,19 @@
+//MirageJS Server Setup
+import "./server/server";
+//React Router
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+//Fake Auth
+import { requireAuth } from "./utils/requireAuth";
+//Layout and Base Route Pages
 import Layout from "./routes/Layout/Layout";
 import MissingPage from "./routes/MissingPage";
 import Root from "./routes/BaseRoot/Root";
 import About from "./routes/About/About";
-
 import Vans, { loader as VansLoader } from "./routes/Vans/Vans";
-
+import ErrorPage from "./routes/ErrorPage";
+import VanPage, { loader as VanPageLoader } from "./routes/Van/VanPage";
+import Login, { loader as LoginLoader } from "./routes/Login/Login";
+//Host Route Pages
 import HostLayout from "./routes/Host/Layout";
 import HostDetails, {
   loader as HostDetailsLoader,
@@ -14,20 +23,13 @@ import HostReviews, {
   loader as HostReviewsLoader,
 } from "./routes/Host/Reviews";
 import HostVans, { loader as HostVansLoader } from "./routes/Host/Vans";
-
+//Host -> Specific Van Route Pages
 import HostVanLayout, {
   loader as HostVanLoader,
 } from "./routes/Host/Van/Layout";
 import HostVanDetails from "./routes/Host/Van/Details";
 import HostVanPricing from "./routes/Host/Van/Pricing";
 import HostVanPhotos from "./routes/Host/Van/Photos";
-
-import ErrorPage from "./routes/ErrorPage";
-
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./server/server";
-import VanPage, { loader as VanPageLoader } from "./routes/Van/VanPage";
-import Login from "./routes/Login/Login";
 
 const router = createBrowserRouter(
   [
@@ -56,6 +58,7 @@ const router = createBrowserRouter(
         {
           path: "login",
           element: <Login />,
+          loader: LoginLoader,
         },
         {
           path: "vans/:vanID",
@@ -67,6 +70,7 @@ const router = createBrowserRouter(
           path: "host",
           element: <HostLayout />,
           errorElement: <ErrorPage />,
+          loader: async () => requireAuth(),
           children: [
             {
               index: true,
@@ -110,7 +114,7 @@ const router = createBrowserRouter(
             },
             {
               path: "vans/:id/edit",
-              element: <div>You're editing me harry</div>,
+              element: <div>TODO: Edit Page</div>,
             },
           ],
         },
