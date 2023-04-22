@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt";
-import { createServer, Model, hasMany, belongsTo } from "miragejs";
+import bcrypt from "bcryptjs";
+import { createServer, Model } from "miragejs";
 import vans from "./data/vans";
 import hosts from "./data/hosts";
 import reviews from "./data/reviews";
@@ -71,6 +71,7 @@ createServer({
 
     this.post("/login", (schema, request) => {
       const { email, password } = JSON.parse(request.requestBody);
+      //TODO FIX BCRYPT ISSUE
       const foundUser = schema.users.find("user", email);
       if (!foundUser) {
         return new Response(
