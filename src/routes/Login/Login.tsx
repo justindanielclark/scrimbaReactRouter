@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import {
-  LoaderFunctionArgs,
-  useLoaderData,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import { loginUser } from "../../api/loginUser";
 
 type loaderData = {
   title: string | null;
@@ -31,6 +27,10 @@ function Login() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setUserLoginInfo((prev) => ({ ...prev, [name]: value }));
+  }
+  function handleSubmit(e: FormDataEvent) {
+    e.preventDefault();
+    loginUser(userLoginInfo).then((data) => console.log(data));
   }
   return (
     <main className="flex flex-1 flex-col justify-center items-center">

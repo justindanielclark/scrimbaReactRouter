@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { createServer, Model, hasMany, belongsTo } from "miragejs";
 import vans from "./data/vans";
 import hosts from "./data/hosts";
@@ -66,6 +67,26 @@ createServer({
         passedUsers.push(users[prop]);
       }
       return { reviews: reviews.models, users: passedUsers };
+    });
+
+    this.post("/login", (schema, request) => {
+      const { email, password } = JSON.parse(request.requestBody);
+      const foundUser = schema.users.find("user", email);
+      if (!foundUser) {
+        return new Response(
+          401,
+          {},
+          {
+            title: "Unable to login",
+            message: "No user with those credentials found",
+          }
+        );
+      }
+      foundUser.password = undefined;
+      return {
+        user: foundUser,
+        token: "Enjoy your pizza, here's your tokens.",
+      };
     });
   },
 });
