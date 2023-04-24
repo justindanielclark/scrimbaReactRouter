@@ -12,7 +12,10 @@ import About from "./routes/About/About";
 import Vans, { loader as VansLoader } from "./routes/Vans/Vans";
 import ErrorPage from "./routes/ErrorPage";
 import VanPage, { loader as VanPageLoader } from "./routes/Van/VanPage";
-import Login, { loader as LoginLoader } from "./routes/Login/Login";
+import Login, {
+  loader as LoginLoader,
+  action as LoginAction,
+} from "./routes/Login/Login";
 //Host Route Pages
 import HostLayout from "./routes/Host/Layout";
 import HostDetails, {
@@ -59,6 +62,7 @@ const router = createBrowserRouter(
           path: "login",
           element: <Login />,
           loader: LoginLoader,
+          action: LoginAction,
         },
         {
           path: "vans/:vanID",

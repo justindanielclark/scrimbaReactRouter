@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { loginUser } from "../../api/loginUser";
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  Form,
+  ActionFunctionArgs,
+  redirect,
+  useActionData,
+  useNavigation,
+} from "react-router-dom";
+import API from "../../api/API";
+import LoginCredentials from "../../types/LoginCredentials";
 
+type FormSubmitStatus = "idle" | "submitting";
 type loaderData = {
   title: string | null;
   message: string | null;
+};
+type actionData = {
+  message: string;
 };
 
 function loader({ request }: LoaderFunctionArgs): loaderData {
@@ -18,41 +31,57 @@ function loader({ request }: LoaderFunctionArgs): loaderData {
   return returnable;
 }
 
+async function action({ params, request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const formDataEmail = formData.get("email");
+  const formDataPassword = formData.get("password");
+  const credentials: LoginCredentials = {
+    email: formDataEmail ? formDataEmail.toString() : "",
+    password: formDataPassword ? formDataPassword.toString() : "",
+  };
+  return await API.loginUser(credentials)
+    .then((data) => {
+      localStorage.setItem("loggedIn", "true");
+      return redirect("/host");
+    })
+    .catch((err) => {
+      return { message: "Invalid Credentials, Please Try Again" };
+    });
+}
+
 function Login() {
-  const [userLoginInfo, setUserLoginInfo] = useState({
-    email: "",
-    password: "",
-  });
-  const data = useLoaderData() as loaderData;
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    setUserLoginInfo((prev) => ({ ...prev, [name]: value }));
-  }
-  function handleSubmit(e: FormDataEvent) {
-    e.preventDefault();
-    loginUser(userLoginInfo).then((data) => console.log(data));
-  }
+  const navigation = useNavigation();
+  const loaderData = useLoaderData() as loaderData;
+  const actionData = useActionData() as actionData | null;
+
   return (
     <main className="flex flex-1 flex-col justify-center items-center">
       <div className="max-w-lg w-full">
-        {data.title && data.message ? (
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-center">{data.title}</h1>
-            <h2 className="text-xl font-bold text-center">{data.message}</h2>
-          </div>
-        ) : undefined}
         <h1 className="text-4xl font-bold mb-6 text-center">
           Sign In to your account
         </h1>
-        <form className="text-lg">
+        {loaderData.title && loaderData.message ? (
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-center">
+              {loaderData.title}
+            </h1>
+            <h2 className="text-xl font-bold text-center">
+              {loaderData.message}
+            </h2>
+          </div>
+        ) : undefined}
+        {actionData && actionData.message ? (
+          <div className="mb-6">
+            <h1 className="text-lg font-bold">{actionData.message}</h1>
+          </div>
+        ) : undefined}
+        <Form className="text-lg" method="post" replace={true}>
           <div className="border-2 border-gray-400 rounded overflow-hidden mb-6">
             <input
               type="email"
               name="email"
               className="p-2 border-b-2 border-gray-400 w-full"
               placeholder="Email Address"
-              value={userLoginInfo.email}
-              onChange={handleChange}
             />
             <input
               type="password"
@@ -60,22 +89,22 @@ function Login() {
               className="p-2 w-full"
               min={6}
               placeholder="Password"
-              value={userLoginInfo.password}
-              onChange={handleChange}
             />
           </div>
 
           <button
-            type="submit"
-            className="bg-orange-500 text-white p-2 rounded w-full text-center"
+            className={`text-white p-2 rounded w-full text-center transition-colors duration-500 ${
+              navigation.state === "idle" ? "bg-orange-500" : "bg-grey-400"
+            }`}
+            disabled={navigation.state !== "idle"}
           >
-            Log In
+            {navigation.state === "idle" ? "Log In" : "Logging In..."}
           </button>
-        </form>
+        </Form>
       </div>
     </main>
   );
 }
 
 export default Login;
-export { loader };
+export { loader, action };

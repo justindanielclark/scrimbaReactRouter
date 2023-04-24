@@ -1,7 +1,7 @@
 import LoginCredentials from "../types/LoginCredentials";
 export async function loginUser(creds: LoginCredentials) {
   const res = await fetch("/api/login", {
-    method: "post",
+    method: "POST",
     body: JSON.stringify(creds),
   });
   const data = await res.json();

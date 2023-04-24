@@ -1,5 +1,4 @@
-import bcrypt from "bcryptjs";
-import { createServer, Model } from "miragejs";
+import { createServer, Model, Response } from "miragejs";
 import vans from "./data/vans";
 import hosts from "./data/hosts";
 import reviews from "./data/reviews";
@@ -22,6 +21,7 @@ createServer({
 
   routes() {
     this.namespace = "api";
+    this.logging = false;
 
     this.get("/vans", (schema, request) => {
       return schema.all("van");
@@ -71,23 +71,20 @@ createServer({
 
     this.post("/login", (schema, request) => {
       const { email, password } = JSON.parse(request.requestBody);
-      //TODO FIX BCRYPT ISSUE
-      const foundUser = schema.users.find("user", email);
-      if (!foundUser) {
+      const foundUser = schema.users.findBy({ email, password });
+      if (foundUser === null) {
         return new Response(
           401,
-          {},
-          {
-            title: "Unable to login",
-            message: "No user with those credentials found",
-          }
+          { some: "header" },
+          { message: "Invalid Login Credentials" }
         );
+      } else {
+        foundUser.password = undefined;
+        return {
+          user: foundUser,
+          token: "Enjoy your pizza, here's your tokens.",
+        };
       }
-      foundUser.password = undefined;
-      return {
-        user: foundUser,
-        token: "Enjoy your pizza, here's your tokens.",
-      };
     });
   },
 });

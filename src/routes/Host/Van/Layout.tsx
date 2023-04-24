@@ -6,7 +6,6 @@ import VanTypeNotif from "../../../components/VanTypeNotif";
 async function loader({ params }: LoaderFunctionArgs) {
   //TODO: Currently Hardcoded Search For Host '123'
   return fetch(`/api/vans/${params.vanId}`).then((res) => {
-    console.log("requested");
     if (res.status === 200) {
       return res.json();
     }
