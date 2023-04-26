@@ -33,7 +33,7 @@ export default function VanLayout() {
             <h1 className="text-2xl font-bold">{data.name}</h1>
           </div>
         </section>
-        <nav className="flex flex-row gap-6 my-4 bg-neutral-100">
+        <nav className="flex flex-row my-4 bg-neutral-100">
           <NavLink
             end
             to={"."}

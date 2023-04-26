@@ -67,13 +67,13 @@ function ReviewScores({
               .map((idx) => {
                 return (
                   <tr
-                    className="flex flex-row items-center gap-2 py-1"
+                    className="flex flex-row items-center gap-0 py-0"
                     key={idx}
                   >
                     <td className="w-16">{`${idx} Star${
                       idx !== 1 ? `s` : ""
                     }`}</td>
-                    <td className="flex flex-row flex-1 bg-gray-400 rounded-lg h-4 items-center justify-start p-0.5">
+                    <td className="flex flex-row flex-1 bg-gray-400 rounded-lg h-3 items-center justify-start">
                       <div
                         className="bg-orange-500 rounded-lg h-full"
                         style={{
